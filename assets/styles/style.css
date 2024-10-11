@@ -1,11 +1,26 @@
-ul {
-  list-style-type: none;
+*,
+html,
+body {
   margin: 0;
   padding: 0;
-  margin-bottom: 10px;
+  box-sizing: border-box;
 }
-li {
-  margin: 5px;
-  padding: 5px;
-  width: 150px;
+
+#description {
+  resize: none;
+  background-color: rgb(246, 246, 246);
+  border-radius: 5px;
+  border: 1px solid rgb(220, 219, 219);
+  margin-top: 10px;
+}
+label[for="datetime"]::before{
+  content: "🗓️ " ;
+}
+input[placeholder="Title"]{
+  height: 40px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.event-dropdown{
+  margin-top: 10px;
 }
