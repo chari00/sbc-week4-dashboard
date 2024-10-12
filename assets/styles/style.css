@@ -5,6 +5,59 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+ul,
+p,
+a {
+  margin: 0;
+  padding: 0;
+}
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+h3 {
+  font-size: 1rem;
+}
+
+/* styles for the side navbar */
+.side-nav ul li {
+  padding: 15px 20px;
+  border-bottom: 1px solid #3e4f61;
+  cursor: pointer;
+  width: 200px;
+  list-style: none;
+  padding: 20px;
+  display: flex;
+  font-size: 1.3rem;
+  font-weight: 600;
+  background-color: #023475;
+  color: whitesmoke;
+}
+
+.side-nav ul li:hover,
+.btn:hover {
+  background-color: #72aaf3;
+  color: #02285a;
+}
+
+/* styles for recently added - dashboard overview */
+.add-task {
+  background-color: #023475;
+  color: whitesmoke;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.recently-added {
+  background-color: rgb(244, 244, 233);
+  border-radius: 5px;
+  border: 1px solid rgb(235, 235, 234);
+  width: 80%;
+  margin: 15px;
+  padding: 20px;
+}
+
+/* styles for inner modal */
 
 #description {
   resize: none;
@@ -13,14 +66,15 @@ body {
   border: 1px solid rgb(220, 219, 219);
   margin-top: 10px;
 }
-label[for="datetime"]::before{
-  content: "🗓️ " ;
+label[for="datetime"]::before {
+  content: "🗓️ ";
 }
-input[placeholder="Title"]{
+input[placeholder="Title"] {
   height: 40px;
   font-size: 1.5rem;
   font-weight: 600;
 }
-.event-dropdown{
+.event-dropdown {
   margin-top: 10px;
 }
+/* styles for inner modal */
