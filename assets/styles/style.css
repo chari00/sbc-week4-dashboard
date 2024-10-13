@@ -5,12 +5,43 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+body{
+  background-color: #9ac5fd0b;
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 150px 1fr;
+  grid-template-areas: 
+  'header header'
+  'aside main';
+}
+
+header{
+  grid-area: header;
+}
+header h2{
+  text-align: center;
+}
+header h1{
+  padding: 10px;
+}
+main{
+  grid-area: main;
+}
+
+aside{
+  grid-area: aside;
+}
 ul,
 p,
 a {
   margin: 0;
   padding: 0;
 }
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 h2 {
   font-size: 2rem;
   font-weight: 700;
@@ -21,17 +52,21 @@ h3 {
 
 /* styles for the side navbar */
 .side-nav ul li {
-  padding: 15px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
   border-bottom: 1px solid #3e4f61;
   cursor: pointer;
   width: 200px;
   list-style: none;
-  padding: 20px;
   display: flex;
   font-size: 1.3rem;
   font-weight: 600;
   background-color: #023475;
   color: whitesmoke;
+  border-radius: 10px 1px 20px;
+  margin-left: 15px;
 }
 
 .side-nav ul li:hover,
@@ -44,20 +79,46 @@ h3 {
 .add-task {
   background-color: #023475;
   color: whitesmoke;
-  font-size: 1.3rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-left: 40px;
 }
 
-.recently-added {
+/* .recently-added {
   background-color: rgb(244, 244, 233);
   border-radius: 5px;
   border: 1px solid rgb(235, 235, 234);
   width: 80%;
   margin: 15px;
   padding: 20px;
+} */
+
+input[type="text"] {
+  padding: 9px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.widget {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+.widget h2{
+  font-size: 1.3rem;
+}
+button {
+  padding: 10px 20px;
+  background-color: #023475;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-/* styles for inner modal */
+/*============ styles for inner modal========== */
 
 #description {
   resize: none;
@@ -77,4 +138,4 @@ input[placeholder="Title"] {
 .event-dropdown {
   margin-top: 10px;
 }
-/* styles for inner modal */
+/* ============================== */

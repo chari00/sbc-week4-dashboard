@@ -1,3 +1,4 @@
+const searchBtn = document.getElementById('searchButton');
 
 
 //this initialize the flatpickr
@@ -17,3 +18,14 @@ flatpickr("#datetime", {
   minDate: "today",
   maxDate: new Date().fp_incr(),
 });
+
+searchBtn.addEventListener('click', search);
+function search(e) {
+  const userInput = document.getElementById('searchTerm').value;
+  const search = document.getElementById('searches')
+  const li =document.createElement('li')
+  li.innerHTML = userInput
+  search.append(li)
+  document.getElementById('searchTerm').value = "";
+}
+

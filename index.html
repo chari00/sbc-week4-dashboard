@@ -25,11 +25,6 @@
   <body>
     <header>
       <h1>My Workspace</h1>
-      <h1>Dashboard overview</h1>
-    </header>
-
-    <aside>
-      <!-- Button trigger modal -->
       <button
         type="button"
         class="btn btn-primary add-task"
@@ -38,6 +33,11 @@
       >
         Add new
       </button>
+      <h2>Dashboard overview</h2>
+    </header>
+
+    <aside>
+      <!-- Button trigger modal -->
       <nav class="side-nav">
         <ul>
           <li class="side-items" id="overview">Overview</li>
@@ -120,8 +120,8 @@
     </section>
 
     <main>
-      <section class="dashboard-container">
-        <section class="recently-added">
+      <section class="container">
+        <section class="widget">
           <h2>Recently Added</h2>
           <div class="options-list-container">
             <h3 class="options">Events</h3>
@@ -130,6 +130,24 @@
           </div>
         </section>
       </section>
+      <section class="container">
+       
+        <div class="main-content">
+            <div class="widget">
+                <h2>Search for something</h2>
+                <input type="text" id="searchTerm" placeholder="Enter a search term" />
+                <button id="searchButton" >Search</button>
+            </div>
+            <div class="widget">
+                <h2>Recent Searches</h2>
+                <ul id="searches">
+                </ul>
+            </div>
+            
+        </div>
+      </section>
+
+    
       <!-- div for task -->
       <!-- div for events -->
       <!-- appointment schedule -->
