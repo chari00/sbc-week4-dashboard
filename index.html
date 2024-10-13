@@ -25,9 +25,12 @@
   <body>
     <header>
       <h1>My Workspace</h1>
+
+      <!-- Button to trigger modal -->
       <button
         type="button"
-        class="btn btn-primary add-task"
+        id="add-task"
+        class="btn btn-primary"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
       >
@@ -37,7 +40,6 @@
     </header>
 
     <aside>
-      <!-- Button trigger modal -->
       <nav class="side-nav">
         <ul>
           <li class="side-items" id="overview">Overview</li>
@@ -84,10 +86,11 @@
               type="text"
               placeholder="Select date and time"
             />
-            <div class="event-dropdown">
+            <div class="dropdown">
               <select
+                id="event-dropdown"
                 class="form-select form-select-sm"
-                aria-label=".form-select-sm example"
+                aria-label="form select"
               >
                 <option selected>Select...</option>
                 <option value="1">Event</option>
@@ -113,7 +116,14 @@
             >
               Cancel
             </button>
-            <button type="button" class="btn btn-primary">Save</button>
+            <button
+              type="button"
+              id="save"
+              class="btn btn-primary"
+              onclick="saveTask"
+            >
+              Save
+            </button>
           </div>
         </section>
       </section>
@@ -131,23 +141,24 @@
         </section>
       </section>
       <section class="container">
-       
         <div class="main-content">
-            <div class="widget">
-                <h2>Search for something</h2>
-                <input type="text" id="searchTerm" placeholder="Enter a search term" />
-                <button id="searchButton" >Search</button>
-            </div>
-            <div class="widget">
-                <h2>Recent Searches</h2>
-                <ul id="searches">
-                </ul>
-            </div>
-            
+          <div class="widget">
+            <h2>Search for something</h2>
+            <input
+              type="text"
+              id="searchTerm"
+              placeholder="Enter a search term"
+              aria-label="Search"
+            />
+            <button id="searchButton">Search</button>
+          </div>
+          <div class="widget">
+            <h2>Recent Searches</h2>
+            <ul id="searches"></ul>
+          </div>
         </div>
       </section>
 
-    
       <!-- div for task -->
       <!-- div for events -->
       <!-- appointment schedule -->
