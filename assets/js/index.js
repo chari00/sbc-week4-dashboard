@@ -45,9 +45,20 @@ function search() {
 // }
 // console.log(savedTask)
 
+//get the category the user chose in modal, display in the recently added div
+const category = () => {
+  if (dropdownModal.value === "1") {
+    return "Event";
+  } else if (dropdownModal.value === "2") {
+    return "Task";
+  } else {
+    return "Appointment schedule";
+  }
+};
+
 const saveTask = (e) => {
   e.preventDefault();
-  console.log("save button is clicked");
+  console.log("DING-DONG that's my save button clicked");
   if (taskTitleModal.value === "") {
     return alert("Please add a title.");
   }
@@ -62,16 +73,23 @@ const saveTask = (e) => {
   }
   const recentlyAdded = document.getElementById("recentlyAdded");
   const div = document.createElement("div");
-  div.classList.add('recent-added-div')
-  div.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
+  div.classList.add("recent-added-div");
+  div.innerHTML = `<h5>${category()}</h5>
+            <h6>Title: ${taskTitleModal.value}</h6>
             <p>Date: ${datetimeModal.value} </p>
             <p>Description: ${descriptionModal.value}</p>`;
   console.log(div);
+  // console.log(localStorage.setItem(taskTitleModal.value));
+  // localStorage.setItem(datetimeModal.value);
+  // localStorage.setItem(dropdownModal.value);
+  // localStorage.setItem(descriptionModal.value);
+
   recentlyAdded.append(div);
-  taskTitleModal.value = '';
-  datetimeModal.value = 'today';
-  dropdownModal.value = 'Select...';
-  descriptionModal.value = '';
+  taskTitleModal.value = "";
+  // datetimeModal.value = "today";
+  dropdownModal.value = "Select...";
+  descriptionModal.value = "";
+  // window.location.replace('/')
 };
 //this triggers the add new button
 saveBtn.addEventListener("click", saveTask);

@@ -79,6 +79,9 @@ button:hover,
   color: #02285a;
 }
 
+/* ============================================ */
+
+
 /* styles for recently added - dashboard overview */
 #add-task {
   background-color: #023475;
@@ -117,6 +120,8 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
+/* ========================================== */
+
 
 /*============ styles for inner modal========== */
 
