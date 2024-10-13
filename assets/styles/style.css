@@ -91,7 +91,10 @@ button:hover,
   margin-left: 40px;
 }
 
-.recent-added-div {
+.recent-added-div,
+.eventDiv,
+.taskDiv,
+.appointmentDiv {
   padding-top: 10px;
   padding-bottom: 10px;
 }

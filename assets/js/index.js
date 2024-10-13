@@ -3,7 +3,11 @@ const taskTitleModal = document.getElementById("task-title");
 const datetimeModal = document.getElementById("datetime");
 const dropdownModal = document.getElementById("event-dropdown");
 const descriptionModal = document.getElementById("description");
+const recentlyAdded = document.getElementById("recentlyAdded");
+const searchDiv = document.querySelector(".main-content");
 const saveBtn = document.getElementById("save");
+const overview = document.getElementById("overview");
+const eventContainer = document.getElementById('event-container')
 
 // this initialize the flatpickr
 document.addEventListener("DOMContentLoaded", function () {
@@ -58,7 +62,7 @@ const category = () => {
 
 const saveTask = (e) => {
   e.preventDefault();
-  console.log("DING-DONG that's my save button clicked");
+  console.log("DING-DONG that's my save button clicked! 🤪");
   if (taskTitleModal.value === "") {
     return alert("Please add a title.");
   }
@@ -71,7 +75,6 @@ const saveTask = (e) => {
   if (descriptionModal.value === "") {
     return alert("Please add description.");
   }
-  const recentlyAdded = document.getElementById("recentlyAdded");
   const div = document.createElement("div");
   div.classList.add("recent-added-div");
   div.innerHTML = `<h5>${category()}</h5>
@@ -79,7 +82,7 @@ const saveTask = (e) => {
             <p>Date: ${datetimeModal.value} </p>
             <p>Description: ${descriptionModal.value}</p>`;
   console.log(div);
-  // console.log(localStorage.setItem(taskTitleModal.value));
+  console.log(localStorage.setItem("taskTitleModal", "taskTitleModal.value"));
   // localStorage.setItem(datetimeModal.value);
   // localStorage.setItem(dropdownModal.value);
   // localStorage.setItem(descriptionModal.value);
@@ -93,3 +96,42 @@ const saveTask = (e) => {
 };
 //this triggers the add new button
 saveBtn.addEventListener("click", saveTask);
+
+//this triggers the overview sidebar to display the saved data
+overview.addEventListener("click", () => {
+  console.log("overview button was clicked");
+  recentlyAdded.remove();
+  searchDiv.remove();
+
+// if category === event
+  const eventContainer = document.getElementById("event-container");
+  const eventDiv = document.createElement("div");
+  eventDiv.classList.add('eventDiv');
+  eventDiv.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
+           <p>Date: ${datetimeModal.value} </p>
+           <p>Description: ${descriptionModal.value}</p>`;
+  console.log(eventDiv);
+  eventContainer.append(eventDiv);
+
+  //if category === task
+  const taskContainer = document.getElementById("task-container");
+  const taskDiv = document.createElement("div");
+  taskDiv.classList.add('taskDiv');
+  taskDiv.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
+           <p>Date: ${datetimeModal.value} </p>
+           <p>Description: ${descriptionModal.value}</p>`;
+  console.log(taskDiv);
+  taskContainer.append(taskDiv);
+
+
+  //if category === appointment
+  const appointmentContainer = document.getElementById("appointment-container");
+  const appointmentDiv = document.createElement("div");
+  appointmentDiv.classList.add('appointmentDiv');
+  appointmentDiv.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
+           <p>Date: ${datetimeModal.value} </p>
+           <p>Description: ${descriptionModal.value}</p>`;
+  console.log(appointmentDiv);
+  appointmentContainer.append(appointmentDiv);
+
+});
