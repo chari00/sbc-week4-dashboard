@@ -7,7 +7,29 @@ const recentlyAdded = document.getElementById("recentlyAdded");
 const searchDiv = document.querySelector(".main-content");
 const saveBtn = document.getElementById("save");
 const overview = document.getElementById("overview");
-const eventContainer = document.getElementById('event-container')
+const overviewContainer = document.getElementById("overview-container");
+
+const homepage = () => {
+  if (overviewContainer) {
+    overviewContainer.remove();
+  }
+  //   window.location.replace('/')
+  //   overviewContainer.remove();
+};
+homepage();
+
+document.getElementById("home").addEventListener("click", (e) => {
+  e.preventDefault();
+  console.log("this return to homepage");
+  // homepage();
+  window.location.replace("/");
+  //   if(window.location.pathname !== '/'){
+  //     window.location.replace('/')
+  //   } else if (overviewContainer){
+  //     overviewContainer.remove();
+
+  //   }
+});
 
 // this initialize the flatpickr
 document.addEventListener("DOMContentLoaded", function () {
@@ -41,14 +63,14 @@ function search() {
   userInput.value = "";
 }
 
-// const savedTask = {
-//   title: taskTitleModal.value,
-//   date: datetimeModal.value,
-//   dropdown: dropdownModal.value,
-//   description: descriptionModal.value,
-// }
-// console.log(savedTask)
+const todoInfo = {
+  title: "",
+  date: datetimeModal.value,
+  dropdown: dropdownModal.value,
+  description: descriptionModal.value,
+};
 
+// console.log(`saved task value = ${Object.values(todoInfo)}, savetask key = ${Object.keys(todoInfo)} `);
 //get the category the user chose in modal, display in the recently added div
 const category = () => {
   if (dropdownModal.value === "1") {
@@ -75,63 +97,80 @@ const saveTask = (e) => {
   if (descriptionModal.value === "") {
     return alert("Please add description.");
   }
+
+  // Update todoInfo object with current values
+  todoInfo.title = taskTitleModal.value;
+  todoInfo.date = datetimeModal.value;
+  todoInfo.dropdown = dropdownModal.value;
+  todoInfo.description = descriptionModal.value;
+
   const div = document.createElement("div");
   div.classList.add("recent-added-div");
   div.innerHTML = `<h5>${category()}</h5>
-            <h6>Title: ${taskTitleModal.value}</h6>
-            <p>Date: ${datetimeModal.value} </p>
-            <p>Description: ${descriptionModal.value}</p>`;
+            <h6>Title: ${todoInfo.title}</h6>
+            <p>Date: ${todoInfo.date} </p>
+            <p>Description: ${todoInfo.description}</p>`;
   console.log(div);
-  console.log(localStorage.setItem("taskTitleModal", "taskTitleModal.value"));
-  // localStorage.setItem(datetimeModal.value);
+  const storeProperty = Object.keys(todoInfo);
+  // console.log(storeProperty);
+  const storeVal = Object.values(todoInfo);
+  // console.log(storeVal);
+  localStorage.setItem(storeProperty, storeVal)
+  // console.log(localStorage.setItem(storeProperty, storeVal));
   // localStorage.setItem(dropdownModal.value);
   // localStorage.setItem(descriptionModal.value);
 
   recentlyAdded.append(div);
   taskTitleModal.value = "";
-  // datetimeModal.value = "today";
+  datetimeModal.value = "today";
   dropdownModal.value = "Select...";
   descriptionModal.value = "";
   // window.location.replace('/')
 };
+console.log(todoInfo);
+
 //this triggers the add new button
 saveBtn.addEventListener("click", saveTask);
 
 //this triggers the overview sidebar to display the saved data
-overview.addEventListener("click", () => {
+overview.addEventListener("click", (e) => {
+  e.preventDefault();
   console.log("overview button was clicked");
+  // overviewContainer.style.display = 'block';
   recentlyAdded.remove();
-  searchDiv.remove();
+  // searchDiv.remove();
+});
+
+/*
+
 
 // if category === event
-  const eventContainer = document.getElementById("event-container");
-  const eventDiv = document.createElement("div");
-  eventDiv.classList.add('eventDiv');
-  eventDiv.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
+const eventContainer = document.getElementById("event-container");
+const eventDiv = document.createElement("div");
+eventDiv.classList.add("eventDiv");
+eventDiv.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
            <p>Date: ${datetimeModal.value} </p>
            <p>Description: ${descriptionModal.value}</p>`;
-  console.log(eventDiv);
-  eventContainer.append(eventDiv);
+console.log(eventDiv);
+eventContainer.append(eventDiv);
 
-  //if category === task
-  const taskContainer = document.getElementById("task-container");
-  const taskDiv = document.createElement("div");
-  taskDiv.classList.add('taskDiv');
-  taskDiv.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
+//if category === task
+const taskContainer = document.getElementById("task-container");
+const taskDiv = document.createElement("div");
+taskDiv.classList.add("taskDiv");
+taskDiv.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
            <p>Date: ${datetimeModal.value} </p>
            <p>Description: ${descriptionModal.value}</p>`;
-  console.log(taskDiv);
-  taskContainer.append(taskDiv);
+console.log(taskDiv);
+taskContainer.append(taskDiv);
 
-
-  //if category === appointment
-  const appointmentContainer = document.getElementById("appointment-container");
-  const appointmentDiv = document.createElement("div");
-  appointmentDiv.classList.add('appointmentDiv');
-  appointmentDiv.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
+//if category === appointment
+const appointmentContainer = document.getElementById("appointment-container");
+const appointmentDiv = document.createElement("div");
+appointmentDiv.classList.add("appointmentDiv");
+appointmentDiv.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
            <p>Date: ${datetimeModal.value} </p>
            <p>Description: ${descriptionModal.value}</p>`;
-  console.log(appointmentDiv);
-  appointmentContainer.append(appointmentDiv);
-
-});
+console.log(appointmentDiv);
+appointmentContainer.append(appointmentDiv);
+*/
