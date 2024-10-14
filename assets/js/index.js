@@ -10,27 +10,28 @@ const overview = document.getElementById("overview");
 const overviewContainer = document.getElementById("overview-container");
 
 const homepage = () => {
-  if (overviewContainer) {
-    overviewContainer.remove();
-  }
-  //   window.location.replace('/')
-  //   overviewContainer.remove();
+  // document.location.replace("/");
+  overviewContainer.style.display = "none";
+  recentlyAdded.style.display = "block";
+  searchDiv.style.display = "block";
+  // if (overviewContainer) {
+  // overviewContainer.style.display = "none";
+  // }
+  // recentlyAdded.style.display = 'block';
+  // searchDiv.style.display = 'block';
 };
-homepage();
 
 document.getElementById("home").addEventListener("click", (e) => {
   e.preventDefault();
   console.log("this return to homepage");
-  // homepage();
-  window.location.replace("/");
-  //   if(window.location.pathname !== '/'){
-  //     window.location.replace('/')
-  //   } else if (overviewContainer){
-  //     overviewContainer.remove();
+  overviewContainer.style.display = "none";
+  recentlyAdded.style.display = "block";
+  searchDiv.style.display = "block";
 
-  //   }
+  // document.location.replace('/')
+  // overviewContainer.remove();
+  homepage();
 });
-
 // this initialize the flatpickr
 document.addEventListener("DOMContentLoaded", function () {
   flatpickr("#datetime", {
@@ -38,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
     dateFormat: "Y-m-d H:i",
   });
 });
-
 //this sets the date and time picker format
 flatpickr("#datetime", {
   enableTime: true,
@@ -48,6 +48,7 @@ flatpickr("#datetime", {
   minDate: "today",
   maxDate: new Date().fp_incr(),
 });
+
 //this triggers the event for search button
 searchBtn.addEventListener("click", search);
 function search() {
@@ -64,7 +65,7 @@ function search() {
 }
 
 const todoInfo = {
-  title: "",
+  title: taskTitleModal.value,
   date: datetimeModal.value,
   dropdown: dropdownModal.value,
   description: descriptionModal.value,
@@ -80,6 +81,29 @@ const category = () => {
   } else {
     return "Appointment schedule";
   }
+};
+const displayAdded = () => {
+  // Update todoInfo object with current values
+  todoInfo.title = taskTitleModal.value;
+  todoInfo.date = datetimeModal.value;
+  todoInfo.dropdown = dropdownModal.value;
+  todoInfo.description = descriptionModal.value;
+
+  // Create and display div
+  const div = document.createElement("div");
+  div.classList.add("recent-added-div");
+  div.innerHTML = `<h5>${category()}</h5>
+           <h6>Title: ${todoInfo.title}</h6>
+           <p>Date: ${todoInfo.date} </p>
+           <p>Description: ${todoInfo.description}</p>`;
+  console.log(div);
+
+  recentlyAdded.append(div);
+  taskTitleModal.value = "";
+  datetimeModal.value = "today";
+  dropdownModal.value = "Select...";
+  descriptionModal.value = "";
+  // window.location.replace('/')
 };
 
 const saveTask = (e) => {
@@ -97,37 +121,44 @@ const saveTask = (e) => {
   if (descriptionModal.value === "") {
     return alert("Please add description.");
   }
+  displayAdded();
 
-  // Update todoInfo object with current values
-  todoInfo.title = taskTitleModal.value;
-  todoInfo.date = datetimeModal.value;
-  todoInfo.dropdown = dropdownModal.value;
-  todoInfo.description = descriptionModal.value;
+  // Store in localStorage
+  localStorage.setItem("todoInfo", JSON.stringify(todoInfo));
 
-  const div = document.createElement("div");
-  div.classList.add("recent-added-div");
-  div.innerHTML = `<h5>${category()}</h5>
-            <h6>Title: ${todoInfo.title}</h6>
-            <p>Date: ${todoInfo.date} </p>
-            <p>Description: ${todoInfo.description}</p>`;
-  console.log(div);
+  // Retrieve from localStorage
+  // const retrievedTodoInfo = JSON.parse(localStorage.getItem("{todoInfo}"));
+  // console.log(retrievedTodoInfo);
+  /*
   const storeProperty = Object.keys(todoInfo);
   // console.log(storeProperty);
   const storeVal = Object.values(todoInfo);
   // console.log(storeVal);
   localStorage.setItem(storeProperty, storeVal)
   // console.log(localStorage.setItem(storeProperty, storeVal));
-  // localStorage.setItem(dropdownModal.value);
-  // localStorage.setItem(descriptionModal.value);
+  */
+};
+
+console.log(todoInfo);
+
+const displayRetrievedItems = () => {
+  const retrieveItem = JSON.parse(localStorage.getItem("todoInfo"));
+  console.log(retrieveItem);
+  const div = document.createElement("div");
+  // div.classList.add("recent-added-div");
+  div.innerHTML = `<h5>${category()}</h5>
+           <h6>Title: ${retrieveItem.title}</h6>
+           <p>Date: ${retrieveItem.date} </p>
+           <p>Description: ${retrieveItem.description}</p>`;
+  console.log(div);
 
   recentlyAdded.append(div);
   taskTitleModal.value = "";
   datetimeModal.value = "today";
   dropdownModal.value = "Select...";
   descriptionModal.value = "";
-  // window.location.replace('/')
 };
-console.log(todoInfo);
+displayRetrievedItems();
 
 //this triggers the add new button
 saveBtn.addEventListener("click", saveTask);
@@ -136,9 +167,9 @@ saveBtn.addEventListener("click", saveTask);
 overview.addEventListener("click", (e) => {
   e.preventDefault();
   console.log("overview button was clicked");
-  // overviewContainer.style.display = 'block';
   recentlyAdded.remove();
-  // searchDiv.remove();
+  searchDiv.remove();
+  overviewContainer.style.display = "block";
 });
 
 /*
@@ -154,23 +185,4 @@ eventDiv.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
 console.log(eventDiv);
 eventContainer.append(eventDiv);
 
-//if category === task
-const taskContainer = document.getElementById("task-container");
-const taskDiv = document.createElement("div");
-taskDiv.classList.add("taskDiv");
-taskDiv.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
-           <p>Date: ${datetimeModal.value} </p>
-           <p>Description: ${descriptionModal.value}</p>`;
-console.log(taskDiv);
-taskContainer.append(taskDiv);
-
-//if category === appointment
-const appointmentContainer = document.getElementById("appointment-container");
-const appointmentDiv = document.createElement("div");
-appointmentDiv.classList.add("appointmentDiv");
-appointmentDiv.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
-           <p>Date: ${datetimeModal.value} </p>
-           <p>Description: ${descriptionModal.value}</p>`;
-console.log(appointmentDiv);
-appointmentContainer.append(appointmentDiv);
 */
