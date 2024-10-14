@@ -32,6 +32,7 @@ document.getElementById("home").addEventListener("click", (e) => {
   // overviewContainer.remove();
   homepage();
 });
+
 // this initialize the flatpickr
 document.addEventListener("DOMContentLoaded", function () {
   flatpickr("#datetime", {
@@ -70,29 +71,38 @@ const todoInfo = {
   dropdown: dropdownModal.value,
   description: descriptionModal.value,
 };
-
+/*
 // console.log(`saved task value = ${Object.values(todoInfo)}, savetask key = ${Object.keys(todoInfo)} `);
 //get the category the user chose in modal, display in the recently added div
-const category = () => {
-  if (dropdownModal.value === "1") {
-    return "Event";
-  } else if (dropdownModal.value === "2") {
-    return "Task";
-  } else {
-    return "Appointment schedule";
-  }
+// const category = () => {
+//   if (dropdownModal.value === "1") {
+//     return "Event";
+//   } else if (dropdownModal.value === "2") {
+//     return "Task";
+//   } else {
+//     return "Appointment schedule";
+//   }
+// };
+*/
+const category = (value) => {
+  if (value === "1") return "Event";
+  if (value === "2") return "Task";
+  return "Appointment schedule";
 };
+
+// this is the updated todoInfo
 const displayAdded = () => {
-  // Update todoInfo object with current values
-  todoInfo.title = taskTitleModal.value;
-  todoInfo.date = datetimeModal.value;
-  todoInfo.dropdown = dropdownModal.value;
-  todoInfo.description = descriptionModal.value;
+  const todoInfo = {
+    title: taskTitleModal.value,
+    date: datetimeModal.value,
+    dropdown: dropdownModal.value,
+    description: descriptionModal.value,
+  };
 
   // Create and display div
   const div = document.createElement("div");
   div.classList.add("recent-added-div");
-  div.innerHTML = `<h5>${category()}</h5>
+  div.innerHTML = `<h5>${category(todoInfo.dropdown)}</h5>
            <h6>Title: ${todoInfo.title}</h6>
            <p>Date: ${todoInfo.date} </p>
            <p>Description: ${todoInfo.description}</p>`;
@@ -104,8 +114,60 @@ const displayAdded = () => {
   dropdownModal.value = "Select...";
   descriptionModal.value = "";
   // window.location.replace('/')
-};
 
+  // Store in localStorage
+  localStorage.setItem("todoInfo", JSON.stringify(todoInfo));
+  // const retrieveItem = JSON.parse(localStorage.getItem("todoInfo"));
+};
+window.addEventListener("load", () => {
+  const storedTodoInfo = localStorage.getItem("todoInfo");
+  if (storedTodoInfo) {
+    const todoInfo = JSON.parse(storedTodoInfo);
+    displayStoredItem(todoInfo);
+  }
+});
+const displayStoredItem = (todoInfo) => {
+  const div = document.createElement("div");
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "☠️";
+  // deleteBtn.style.backgroundColor = 'white'
+  div.classList.add("recent-added-div");
+  div.innerHTML = `<h5>${category(todoInfo.dropdown)}</h5>
+         <h6>Title: ${todoInfo.title}</h6>
+         <p>Date: ${todoInfo.date} </p>
+         <p>Description: ${todoInfo.description}</p>`;
+  recentlyAdded.append(div);
+  div.append(deleteBtn);
+
+  // remove the todo info div and localStorage
+  deleteBtn.addEventListener("click", () => {
+    console.log("its the delete button");
+    div.remove();
+    localStorage.clear(todoInfo);
+  });
+};
+/*
+// const displayEvent = (todoInfo) => {
+//   if (todoInfo.dropdown === "1") {
+//     document.getElementById("event-container").append(div);
+//     console.log(todoInfo.dropdown)
+//   }
+// };
+// displayEvent();
+// const displayTask = (todoInfo) => {
+//   if (todoInfo.dropdown === "2") {
+//     document.getElementById("task-container").append(div);
+//   }
+// };
+
+// const displayAppointment = (todoInfo) => {
+//   if (todoInfo.dropdown === "2") {
+//     document.getElementById("appointment-container").append(div);
+//   }
+// };
+*/
+
+// this is the function for the save button
 const saveTask = (e) => {
   e.preventDefault();
   console.log("DING-DONG that's my save button clicked! 🤪");
@@ -122,45 +184,32 @@ const saveTask = (e) => {
     return alert("Please add description.");
   }
   displayAdded();
-
-  // Store in localStorage
-  localStorage.setItem("todoInfo", JSON.stringify(todoInfo));
+  // displayRetrievedItems();
 
   // Retrieve from localStorage
-  // const retrievedTodoInfo = JSON.parse(localStorage.getItem("{todoInfo}"));
-  // console.log(retrievedTodoInfo);
-  /*
-  const storeProperty = Object.keys(todoInfo);
-  // console.log(storeProperty);
-  const storeVal = Object.values(todoInfo);
-  // console.log(storeVal);
-  localStorage.setItem(storeProperty, storeVal)
-  // console.log(localStorage.setItem(storeProperty, storeVal));
-  */
+  // const retrieveItem = JSON.parse(localStorage.getItem("todoInfo"));
+  // console.log(retrieveItem);
 };
 
 console.log(todoInfo);
+/*
+// const displayRetrievedItems = () => {
+//   const retrieveItem = JSON.parse(localStorage.getItem("todoInfo"));
+//   console.log(retrieveItem);
 
-const displayRetrievedItems = () => {
-  const retrieveItem = JSON.parse(localStorage.getItem("todoInfo"));
-  console.log(retrieveItem);
-  const div = document.createElement("div");
-  // div.classList.add("recent-added-div");
-  div.innerHTML = `<h5>${category()}</h5>
-           <h6>Title: ${retrieveItem.title}</h6>
-           <p>Date: ${retrieveItem.date} </p>
-           <p>Description: ${retrieveItem.description}</p>`;
-  console.log(div);
+//   const div = document.createElement("div");
+//   div.classList.add("recent-added-div");
+//   div.innerHTML = `<h5>${category()}</h5>
+//            <h6>Title: ${retrieveItem.title}</h6>
+//            <p>Date: ${retrieveItem.date} </p>
+//            <p>Description: ${retrieveItem.description}</p>`;
+//   console.log(div);
+//    recentlyAdded.append(div);
 
-  recentlyAdded.append(div);
-  taskTitleModal.value = "";
-  datetimeModal.value = "today";
-  dropdownModal.value = "Select...";
-  descriptionModal.value = "";
-};
-displayRetrievedItems();
-
-//this triggers the add new button
+// };
+// displayRetrievedItems();
+*/
+//this triggers the save button
 saveBtn.addEventListener("click", saveTask);
 
 //this triggers the overview sidebar to display the saved data
@@ -171,18 +220,3 @@ overview.addEventListener("click", (e) => {
   searchDiv.remove();
   overviewContainer.style.display = "block";
 });
-
-/*
-
-
-// if category === event
-const eventContainer = document.getElementById("event-container");
-const eventDiv = document.createElement("div");
-eventDiv.classList.add("eventDiv");
-eventDiv.innerHTML = `<h6>Title: ${taskTitleModal.value}</h6>
-           <p>Date: ${datetimeModal.value} </p>
-           <p>Description: ${descriptionModal.value}</p>`;
-console.log(eventDiv);
-eventContainer.append(eventDiv);
-
-*/
