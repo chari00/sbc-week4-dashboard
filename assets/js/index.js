@@ -11,7 +11,6 @@ const overviewContainer = document.getElementById("overview-container");
 const deleteBtn = document.createElement("button");
 const editBtn = document.createElement("button");
 const div = document.createElement("div");
-const modal = document.getElementsByClassName("modal");
 
 const homepage = () => {
   // document.location.replace("/");
@@ -60,8 +59,7 @@ function search() {
   search.append(li);
   userInput.value = "";
 }
-// let recentlyAddedDiv = recentlyAdded;
-// recentlyAddedDiv = [];
+
 // console.log(recentlyAddedDiv);
 let todoInfo = [];
 const category = (value) => {
@@ -83,37 +81,22 @@ const displayAdded = () => {
   saveTodoInfo(todoInfo);
   displayStoredItem(todoInfo);
   
-  /*
-  // Create and display div
-  // console.log(localStorage.getItem("todoInfo") === null);
-  // console.log(localStorage.length >= 0);
+  // const deleteBtn = document.createElement("button");
+  // const editBtn = document.createElement("button");
+  // const div = document.createElement("div");
 
-  // if (localStorage.getItem("todoInfo") === null) {
-  //   localStorage.setItem("todoInfo", JSON.stringify(todoInfo));
-  // }
-  // if (localStorage.length > 0) {
-  //   const existingTodoInfo = JSON.parse(localStorage.getItem('todoInfo')) || [];
-  //   console.log(existingTodoInfo)
-  //   const newTodoInfo = existingTodoInfo + div;
-  //   localStorage.setItem('todoInfo', JSON.stringify(newTodoInfo));
-  //   recentlyAddedDiv.push(newTodoInfo)
-  //   console.log(newTodoInfo)
-  // }
+  // deleteBtn.textContent = "Delete";
+  // editBtn.textContent = "Edit";
+  // div.classList.add("recent-added-div");
+  // div.innerHTML = `<h5>${category(todoInfo.dropdown)}</h5>
+  //          <h6>Title: ${todoInfo.title}</h6>
+  //          <p>Date: ${todoInfo.date} </p>
+  //          <p>Description: ${todoInfo.description}</p>`;
+  // // console.log(div);
 
-  */
-
-  deleteBtn.textContent = "Delete";
-  editBtn.textContent = "Edit";
-  div.classList.add("recent-added-div");
-  div.innerHTML = `<h5>${category(todoInfo.dropdown)}</h5>
-           <h6>Title: ${todoInfo.title}</h6>
-           <p>Date: ${todoInfo.date} </p>
-           <p>Description: ${todoInfo.description}</p>`;
-  // console.log(div);
-
-  recentlyAdded.appendChild(div);
-  div.appendChild(deleteBtn);
-  div.appendChild(editBtn);
+  // recentlyAdded.appendChild(div);
+  // div.appendChild(deleteBtn);
+  // div.appendChild(editBtn);
 
   //clear the input
   taskTitleModal.value = "";
@@ -121,8 +104,6 @@ const displayAdded = () => {
   dropdownModal.value = "Select...";
   descriptionModal.value = "";
 
-  // // Store in localStorage
-  // localStorage.setItem("todoInfo", JSON.stringify(todoInfo));
 
   // remove the todo info div and localStorage
   deleteTodo();
@@ -143,6 +124,7 @@ const deleteTodo = () => {
   deleteBtn.addEventListener("click", () => {
     // console.log("its the delete button");
     div.remove();
+    // removeTodoFromStorage(todoInfo);
     localStorage.clear(todoInfo);
   });
 };
@@ -151,59 +133,33 @@ const editTodo = () => {
   editBtn.addEventListener("click", () => {
     console.log("this is edit button");
 
-    /*
-    * option1
-    -work out how to get the existing div with the info from local storage
-    -reassign each the value of the innerHTML to the new user input
-    -use an object as a place holder (the todoInfo??)
-    -after the user input the new info, replace or update the stored items in the local storage
-    -might need to consider having a key or index but have to research how to do it with local storage
-    -get the updated info from local storage and render it to the page.
-
-   * option2
-    - access the modal,
-    - query and update the info in the modal,
-    - the updated information should be displayed in the page and replace the previous one
-    - set the updated info to the local storage
-    - get the updated info from local storage to persist rendering the info.
-
-*/
   });
 };
 // persist the info when the page reload
-// window.addEventListener("load", () => {
-//   const storedTodoInfo = localStorage.getItem("todoInfo");
-//   console.log(storedTodoInfo)
-//   if (storedTodoInfo) {
-//     const todoInfoFromStorage = JSON.parse(storedTodoInfo);
-//     console.log(todoInfoFromStorage)
-//     displayStoredItem(todoInfoFromStorage);
-//   }
-// });
 window.addEventListener("load", () => {
-  const storedTodoInfo = localStorage.getItem("todoInfo");
+  const storedTodoInfo = JSON.parse(localStorage.getItem("todoInfo"));
   console.log(storedTodoInfo);
   if (storedTodoInfo) {
-    const todoInfoArray = JSON.parse(storedTodoInfo);
-    console.log(todoInfoArray);
-    todoInfoArray.forEach((todoInfo) => displayStoredItem(todoInfo));
-
-    //get the value of the index inside the array ----> to be continue <----
+    storedTodoInfo.forEach(todoInfo => displayStoredItem(todoInfo));
   }
 });
 
-const displayStoredItem = (todoInfoArray) => {
-  // console.log(todoInfoArray.description)
+const displayStoredItem = (todoInfo) => {
+  const div = document.createElement("div");
+  const deleteBtn = document.createElement("button");
+  const editBtn = document.createElement("button");
+
   deleteBtn.textContent = "Delete";
   editBtn.textContent = "Edit";
   div.classList.add("recent-added-div");
-  div.innerHTML = `<h5>${category(todoInfoArray.dropdown)}</h5>
-         <h6>Title: ${todoInfoArray.title}</h6>
-         <p>Date: ${todoInfoArray.date} </p>
-         <p>Description: ${todoInfoArray.description}</p>`;
+  div.innerHTML = `<h5>${category(todoInfo.dropdown)}</h5>
+         <h6>Title: ${todoInfo.title}</h6>
+         <p>Date: ${todoInfo.date} </p>
+         <p>Description: ${todoInfo.description}</p>`;
   recentlyAdded.appendChild(div);
   div.appendChild(deleteBtn);
   div.appendChild(editBtn);
+
 
   // remove the todo info div and localStorage item
   deleteTodo();
