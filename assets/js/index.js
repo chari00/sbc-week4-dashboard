@@ -61,7 +61,6 @@ function search() {
 }
 
 // console.log(recentlyAddedDiv);
-let todoInfo = [];
 const category = (value) => {
   if (value === "1") return "Event";
   if (value === "2") return "Task";
@@ -77,26 +76,10 @@ const displayAdded = () => {
     description: descriptionModal.value,
   };
   console.log(todoInfo);
-
+  // this is the saved items from the local storage.
   saveTodoInfo(todoInfo);
+  //this is to display the saved items from the local storage
   displayStoredItem(todoInfo);
-  
-  // const deleteBtn = document.createElement("button");
-  // const editBtn = document.createElement("button");
-  // const div = document.createElement("div");
-
-  // deleteBtn.textContent = "Delete";
-  // editBtn.textContent = "Edit";
-  // div.classList.add("recent-added-div");
-  // div.innerHTML = `<h5>${category(todoInfo.dropdown)}</h5>
-  //          <h6>Title: ${todoInfo.title}</h6>
-  //          <p>Date: ${todoInfo.date} </p>
-  //          <p>Description: ${todoInfo.description}</p>`;
-  // // console.log(div);
-
-  // recentlyAdded.appendChild(div);
-  // div.appendChild(deleteBtn);
-  // div.appendChild(editBtn);
 
   //clear the input
   taskTitleModal.value = "";
@@ -104,52 +87,55 @@ const displayAdded = () => {
   dropdownModal.value = "Select...";
   descriptionModal.value = "";
 
-
-  // remove the todo info div and localStorage
-  deleteTodo();
-  //function call to edit todo info
-  editTodo();
+  pageReload();
 };
 
 const saveTodoInfo = (todoInfo) => {
+  //get and parse the existing items from the local storage to javascript
   const existingTodos = JSON.parse(localStorage.getItem("todoInfo")) || [];
   console.log(existingTodos);
+  //push the newly added todoinfo to the exisingtodos that is parsed from the local storage
   existingTodos.push(todoInfo);
   console.log(todoInfo);
+  // convert the updated todos to string to save in local storage
   localStorage.setItem("todoInfo", JSON.stringify(existingTodos));
 };
 
 //this triggers the delete button
-const deleteTodo = () => {
-  deleteBtn.addEventListener("click", () => {
-    // console.log("its the delete button");
-    div.remove();
-    // removeTodoFromStorage(todoInfo);
-    localStorage.clear(todoInfo);
-  });
+const deleteTodoInfo = (index) => {
+  // Retrieve the stored items from local storage
+  const existingTodos = JSON.parse(localStorage.getItem("todoInfo")) || [];
+  // Remove the item at the specified index
+  existingTodos.splice(index, 1);
+  // Update the local storage
+  localStorage.setItem("todoInfo", JSON.stringify(existingTodos));
+
+  pageReload();
 };
+
 // triggers the edit button
-const editTodo = () => {
-  editBtn.addEventListener("click", () => {
-    console.log("this is edit button");
+const editTodo = () => {};
 
-  });
+const pageReload = () => {
+  // Clear the existing display
+  recentlyAdded.innerHTML = "";
+  // Get the updated todo list from local storage
+  const existingTodos = JSON.parse(localStorage.getItem("todoInfo")) || [];
+  // this display each todo item
+  existingTodos.forEach((todoInfo, index) =>
+    displayStoredItem(todoInfo, index)
+  );
 };
-// persist the info when the page reload
-window.addEventListener("load", () => {
-  const storedTodoInfo = JSON.parse(localStorage.getItem("todoInfo"));
-  console.log(storedTodoInfo);
-  if (storedTodoInfo) {
-    storedTodoInfo.forEach(todoInfo => displayStoredItem(todoInfo));
-  }
-});
 
-const displayStoredItem = (todoInfo) => {
+const displayStoredItem = (todoInfo, index) => {
   const div = document.createElement("div");
   const deleteBtn = document.createElement("button");
   const editBtn = document.createElement("button");
 
   deleteBtn.textContent = "Delete";
+  deleteBtn.setAttribute("style", "margin-right:10px;");
+  deleteBtn.addEventListener("click", () => deleteTodoInfo(index));
+
   editBtn.textContent = "Edit";
   div.classList.add("recent-added-div");
   div.innerHTML = `<h5>${category(todoInfo.dropdown)}</h5>
@@ -159,17 +145,11 @@ const displayStoredItem = (todoInfo) => {
   recentlyAdded.appendChild(div);
   div.appendChild(deleteBtn);
   div.appendChild(editBtn);
-
-
-  // remove the todo info div and localStorage item
-  deleteTodo();
-  editTodo();
 };
 
 // this is the function for the save button
 const saveTask = (e) => {
   e.preventDefault();
-  // console.log("DING-DONG that's my save button clicked! 🤪");
   if (taskTitleModal.value === "") {
     return alert("Please add a title.");
   }
