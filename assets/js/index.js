@@ -101,7 +101,7 @@ const saveTodoInfo = (todoInfo) => {
   localStorage.setItem("todoInfo", JSON.stringify(existingTodos));
 };
 
-window.addEventListener('load', ()=> pageReload())
+window.addEventListener("load", () => pageReload());
 
 //this triggers the delete button
 const deleteTodoInfo = (index) => {
@@ -126,11 +126,74 @@ const editTodo = (index) => {
   dropdownModal.value = todoToEdit.dropdown;
   descriptionModal.value = todoToEdit.description;
 
-//TODO research how to redisplay bootstrap modal. (issue modal is not displaying when edit button is clicked) 
 
+
+  // Change button state and event listener
+  saveBtn.textContent = "Update";
+  const updateHandler = (e) => updateTodo(e, index);
+  saveBtn.removeEventListener("click", saveTask);
+  saveBtn.addEventListener("click", updateHandler);
+
+  // Store handler reference for cleanup
+  saveBtn.updateHandler = updateHandler;
+
+  // Show the modal
+  const modal = bootstrap.Modal.getOrCreateInstance(
+    document.getElementById("exampleModal")
+  );
+  modal.show();
+  // pageReload();
 };
 
+const updateTodo = (e, index) => {
+  e.preventDefault();
 
+  const existingTodos = JSON.parse(localStorage.getItem("todoInfo")) || [];
+
+  const updatedTodo = {
+    title: taskTitleModal.value,
+    date: datetimeModal.value,
+    dropdown: dropdownModal.value,
+    description: descriptionModal.value,
+  };
+
+
+  //this is for modal field validation
+  if (!updatedTodo.title) {
+    return alert("Title cannot be empty");
+  }
+  if (!updatedTodo.date) {
+    return alert("Date cannot be empty");
+  }
+  if (!updatedTodo.dropdown || updatedTodo.dropdown === "Select...") {
+    return alert("Please select a category");
+  }
+  if (!updatedTodo.description) {
+    return alert("Description cannot be empty");
+  }
+
+  
+  // const existingTodos = JSON.parse(localStorage.getItem("todoInfo")) || [];
+  existingTodos[index] = updatedTodo;
+  localStorage.setItem("todoInfo", JSON.stringify(existingTodos));
+
+  // Reset the form and button
+  taskTitleModal.value = "";
+  datetimeModal.value = "today";
+  dropdownModal.value = "Select...";
+  descriptionModal.value = "";
+
+  saveBtn.textContent = "Save";
+  saveBtn.removeEventListener("click", saveBtn.updateHandler);
+  saveBtn.addEventListener("click", saveTask);
+
+  // Close the modal
+  const modal = bootstrap.Modal.getInstance(
+    document.getElementById("exampleModal")
+  );
+  modal.hide();
+  pageReload();
+};
 
 const pageReload = () => {
   // Clear the existing display
@@ -153,7 +216,7 @@ const displayStoredItem = (todoInfo, index) => {
   deleteBtn.addEventListener("click", () => deleteTodoInfo(index));
 
   editBtn.textContent = "Edit";
-  editBtn.addEventListener('click', editTodo(index))
+  editBtn.addEventListener("click", () => editTodo(index));
   div.classList.add("recent-added-div");
   div.innerHTML = `<h5>${category(todoInfo.dropdown)}</h5>
          <h6>Title: ${todoInfo.title}</h6>
