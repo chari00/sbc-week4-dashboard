@@ -93,13 +93,15 @@ const displayAdded = () => {
 const saveTodoInfo = (todoInfo) => {
   //get and parse the existing items from the local storage to javascript
   const existingTodos = JSON.parse(localStorage.getItem("todoInfo")) || [];
-  console.log(existingTodos);
   //push the newly added todoinfo to the exisingtodos that is parsed from the local storage
   existingTodos.push(todoInfo);
   console.log(todoInfo);
+  console.log(existingTodos);
   // convert the updated todos to string to save in local storage
   localStorage.setItem("todoInfo", JSON.stringify(existingTodos));
 };
+
+window.addEventListener('load', ()=> pageReload())
 
 //this triggers the delete button
 const deleteTodoInfo = (index) => {
@@ -114,7 +116,21 @@ const deleteTodoInfo = (index) => {
 };
 
 // triggers the edit button
-const editTodo = () => {};
+const editTodo = (index) => {
+  const existingTodos = JSON.parse(localStorage.getItem("todoInfo")) || [];
+  const todoToEdit = existingTodos[index];
+
+  //get the data from the existing todo from local storage by correspondig index
+  taskTitleModal.value = todoToEdit.title;
+  datetimeModal.value = todoToEdit.date;
+  dropdownModal.value = todoToEdit.dropdown;
+  descriptionModal.value = todoToEdit.description;
+
+//TODO research how to redisplay bootstrap modal. (issue modal is not displaying when edit button is clicked) 
+
+};
+
+
 
 const pageReload = () => {
   // Clear the existing display
@@ -137,6 +153,7 @@ const displayStoredItem = (todoInfo, index) => {
   deleteBtn.addEventListener("click", () => deleteTodoInfo(index));
 
   editBtn.textContent = "Edit";
+  editBtn.addEventListener('click', editTodo(index))
   div.classList.add("recent-added-div");
   div.innerHTML = `<h5>${category(todoInfo.dropdown)}</h5>
          <h6>Title: ${todoInfo.title}</h6>
