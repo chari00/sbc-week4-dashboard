@@ -90,9 +90,11 @@ const displayAdded = () => {
   pageReload();
 };
 
+const getExistingTodos = ()=> JSON.parse(localStorage.getItem("todoInfo")) || [];
+
 const saveTodoInfo = (todoInfo) => {
   //get and parse the existing items from the local storage to javascript
-  const existingTodos = JSON.parse(localStorage.getItem("todoInfo")) || [];
+  const existingTodos = getExistingTodos()
   //push the newly added todoinfo to the exisingtodos that is parsed from the local storage
   existingTodos.push(todoInfo);
   console.log(todoInfo);
@@ -106,7 +108,7 @@ window.addEventListener("load", () => pageReload());
 //this triggers the delete button
 const deleteTodoInfo = (index) => {
   // Retrieve the stored items from local storage
-  const existingTodos = JSON.parse(localStorage.getItem("todoInfo")) || [];
+  const existingTodos = getExistingTodos()
   // Remove the item at the specified index
   existingTodos.splice(index, 1);
   // Update the local storage
@@ -117,7 +119,7 @@ const deleteTodoInfo = (index) => {
 
 // triggers the edit button
 const editTodo = (index) => {
-  const existingTodos = JSON.parse(localStorage.getItem("todoInfo")) || [];
+  const existingTodos = getExistingTodos()
   const todoToEdit = existingTodos[index];
 
   //get the data from the existing todo from local storage by correspondig index
@@ -148,7 +150,7 @@ const editTodo = (index) => {
 const updateTodo = (e, index) => {
   e.preventDefault();
 
-  const existingTodos = JSON.parse(localStorage.getItem("todoInfo")) || [];
+  const existingTodos = getExistingTodos()
 
   const updatedTodo = {
     title: taskTitleModal.value,
@@ -199,7 +201,7 @@ const pageReload = () => {
   // Clear the existing display
   recentlyAdded.innerHTML = "";
   // Get the updated todo list from local storage
-  const existingTodos = JSON.parse(localStorage.getItem("todoInfo")) || [];
+  const existingTodos = getExistingTodos()
   // this display each todo item
   existingTodos.forEach((todoInfo, index) =>
     displayStoredItem(todoInfo, index)
@@ -233,7 +235,7 @@ const saveTask = (e) => {
   if (taskTitleModal.value === "") {
     return alert("Please add a title.");
   }
-  if (datetimeModal.value === "") {
+  if (datetimeModal.value === "today") {
     return alert("Please add a date.");
   }
   if (dropdownModal.value === "Select...") {
